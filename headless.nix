@@ -2,14 +2,12 @@
 
 {
   # === Lid close / power button — do nothing ===
-  services.logind = {
-    lidSwitch = "ignore";
-    lidSwitchExternalPower = "ignore";
-    lidSwitchDocked = "ignore";
-    settings.Login = {
-      HandlePowerKey = "ignore";
-      IdleAction = "ignore";
-    };
+  services.logind.settings.Login = {
+    HandleLidSwitch = "ignore";
+    HandleLidSwitchExternalPower = "ignore";
+    HandleLidSwitchDocked = "ignore";
+    HandlePowerKey = "ignore";
+    IdleAction = "ignore";
   };
 
   # === Disable all sleep targets entirely ===
