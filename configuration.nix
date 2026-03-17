@@ -1,14 +1,22 @@
 { config, pkgs, lib, ... }:
 
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [
+    ./hardware-configuration.nix
+    ./headless.nix
+  ];
 
   # Flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Bootloader
   boot.loader.efi.efiSysMountPoint = "/boot";
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot = {
+    enable = true;
+    consoleMode = "max";
+    configurationLimit = 20;  # prevent EFI partition filling up (shared with macOS)
+  };
+  boot.loader.timeout = 5;
 
   # Networking
   networking.hostName = "nix-charlie";
@@ -90,6 +98,10 @@
     htop
     fastfetch
     curl
+    efibootmgr
+    lm_sensors
+    smartmontools
+    iotop
   ];
 
   system.stateVersion = "25.11";
