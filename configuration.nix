@@ -18,6 +18,15 @@
   };
   boot.loader.timeout = 5;
 
+  #Auto-upgrade
+  system.autoUpgrade = {
+    enable = true;
+    flake = "github:ggfevans/config-nix-charlie";
+    dates = "04:00";          # check once a day at 4am
+    allowReboot = false;       # don't auto-reboot, just build and switch
+    randomizedDelaySec = "30min";  # jitter to avoid thundering herd (less relevant with one machine, but good habit)
+  };
+
   # Networking
   networking.hostName = "nix-charlie";
   networking.networkmanager.enable = true;
@@ -42,6 +51,16 @@
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" ];
   };
+
+  # Passwordless sudo for system management commands
+  security.sudo.extraRules = [{
+    users = [ "gvns" ];
+    commands = [
+      { command = "/run/current-system/sw/bin/nixos-rebuild"; options = [ "NOPASSWD" ]; }
+      { command = "/run/current-system/sw/bin/systemctl"; options = [ "NOPASSWD" ]; }
+      { command = "/run/current-system/sw/bin/nix-collect-garbage"; options = [ "NOPASSWD" ]; }
+    ];
+  }];
 
   # SSH — hardened, port 42042
   services.openssh = {
