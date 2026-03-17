@@ -6,10 +6,10 @@
     lidSwitch = "ignore";
     lidSwitchExternalPower = "ignore";
     lidSwitchDocked = "ignore";
-    extraConfig = ''
-      HandlePowerKey=ignore
-      IdleAction=ignore
-    '';
+    settings.Login = {
+      HandlePowerKey = "ignore";
+      IdleAction = "ignore";
+    };
   };
 
   # === Disable all sleep targets entirely ===
