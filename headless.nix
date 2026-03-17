@@ -36,4 +36,23 @@
     "kernel.panic" = 10;
     "kernel.panic_on_oops" = 1;
   };
+
+  # === Hardware monitoring ===
+  services.prometheus.exporters.node = {
+    enable = true;
+    port = 9100;
+    enabledCollectors = [
+      "cpu"
+      "diskstats"
+      "filesystem"
+      "hwmon"
+      "loadavg"
+      "meminfo"
+      "netdev"
+      "os"
+      "systemd"
+      "thermal_zone"
+      "time"
+    ];
+  };
 }
